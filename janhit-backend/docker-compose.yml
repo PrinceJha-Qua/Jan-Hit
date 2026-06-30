@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: janhit
+      POSTGRES_PASSWORD: janhit
+      POSTGRES_DB: janhit
+    ports:
+      - "5432:5432"
+    volumes:
+      - janhit_pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://janhit:janhit@db:5432/janhit
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  janhit_pgdata:
